@@ -38,10 +38,14 @@ This module is responsible for determining the best combination of hyperparamete
 
 ## Using the Trained Model
 To recreate the model, including its weights and the optimizer:
-```model = tf.keras.models.load_model('my_model.h5')```
+```
+model = tf.keras.models.load_model('my_model.h5')
+```
 
 To make predictions:
-```predictions = model.predict(input_data)```
+```
+predictions = model.predict(input_data)
+```
 where the input data should be of the shape: __(n, 9)__
 given n is any number of samples.
 
