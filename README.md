@@ -30,9 +30,13 @@ Reference: https://medium.com/swlh/predict-customer-lifetime-value-with-machine-
 
 ## Jupyter Notebook Overview
 The notebook is divided into two modules:
-1. **Module 1: Preprocessing, Visualization and Model Selection**
+
+ &ensp; **Module 1: Preprocessing, Visualization and Model Selection**
+ 
 The module is designed to take raw data as input and output a preprocessed dataset, along with visualizations and select a machine learning model that can be used for prediction.
-2. **Module 2: Optimization**
+
+ &ensp; **Module 2: Optimization**
+
 This module is responsible for determining the best combination of hyperparameters to obtain the optimal machine learning model. This includes testing the best architecture for the Multilayer Neural Network, experimenting with different optimizers, and using grid search to determine the best hyperparameters.
 
 
