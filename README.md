@@ -53,3 +53,10 @@ predictions = model.predict(input_data)
 where the input data should be of the shape: __(n, 9)__
 given n is any number of samples.
 
+
+## Executing the project
+1. Ensure that you have anaconda installed on your device.
+2. Create a virtual environment for this project "conda create –n cltv python=3.9"
+3. Activate the environment "conda activate cltv"
+4. Install the requiremnts "pip install -r requirement.txt"
+5. Run the app.py file 
