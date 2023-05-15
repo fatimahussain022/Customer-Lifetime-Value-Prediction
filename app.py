@@ -1,39 +1,32 @@
 #Import libraries
-import numpy as np
-from tensorflow import keras
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-import tensorflow as tf
-
-import pandas as pd
-
 from flask import Flask, request, render_template
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+import numpy as np
+import pandas as pd
+from tensorflow.keras.models import load_model
+
 app = Flask(__name__)
 
+# route
 @app.route('/')
 def home():
-
     return render_template('index.html', datetime=datetime)
-    # return render_template('index.html', current_month=current_month, current_year=current_year, datetime=datetime, relativedelta=relativedelta)
-
 
 
 def get_model():
     '''
     Loading model for the server-side
     '''
-    model = tf.keras.models.load_model('./Trained Model/my_model.h5')
-    print(" * Model loaded!")
+    model = load_model('./Trained Model/final_model.h5')
     return model
 
 
 @app.route('/predict', methods=['POST'])
 def predict():
     '''
-    A view for rendering results on HTML GUI
+    A view for rendering results on HTML GUI with the prediction
     '''
 
     print("\n\nIn PREDICT \n\n")
@@ -42,11 +35,13 @@ def predict():
 
     # preprocess the html inputs
     array = preprocess_data(input_generator)
-    model = get_model()
-    prediction = model.predict([array])
-    print(prediction)
 
-    return render_template('index.html', datetime=datetime, prediction_placeholder=0)
+    # get model and predict
+    model = get_model()
+    prediction = model.predict(array)
+
+    # rednder with the predictions
+    return render_template('index.html', datetime=datetime, prediction_placeholder=prediction[0][0])
  
 def preprocess_data(inputs):
     '''
@@ -57,23 +52,25 @@ def preprocess_data(inputs):
     # convert generator to list
     inputs = list(inputs)
 
-    # couple the corresponding values, first being monthly count
+    # couple the corresponding values, 
+    # first being monthly count
     # second being monthly expense
     list_of_tuples = []
     for i in range(0, len(inputs), 2):
         list_of_tuples.append((int(inputs[i]),int(inputs[i+1])))
-    print(list_of_tuples)
-    input_len = len(list_of_tuples)
 
     # convert the data into groups of 3
     NUM_GROUPS = 3
     per_group = len(list_of_tuples)/NUM_GROUPS 
-    print(per_group) 
+
+    # convert to dataframe, make 3 groups, get sum, count, average
     df = pd.DataFrame(data=list_of_tuples, columns=['count','expense'])
     grouped_df = df.groupby(df.index // per_group).apply(lambda x: pd.Series({'count': x['count'].sum(), 'expense': x['expense'].sum()}))
     grouped_df['average'] = grouped_df['expense']/grouped_df['count']
-    array = np.reshape(np.array(grouped_df), (9,))
 
+    # flatten
+    array = np.reshape(np.array(grouped_df), (1, 9,))
+    print(array)
     return array
 
 
