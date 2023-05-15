@@ -42,19 +42,19 @@
                     month_diff) % 12 or 12 %} {% set year=current_year - year_diff %} {% set month_name=datetime(year,
                     month, 1).strftime("%B") %} 
                 <div class='container'>
-                    <h2 style="color:whitesmoke; font-size: xx-large;">{{ month_name }}</h2>
+                    <h2 style="color:whitesmoke; margin: 20px 0px">{{ month_name }}</h2>
                     <div class="row" style="display: flex">
                         <!-- total expenses in the month -->
                         <div style="width: 50%;">
                             <label>Total number of times you have shopped in this month:</label>
                             <input type="text" name="count{{ i }}" 
-                                required="required" class="purchase-input" value="{{ month_diff }}" />
+                                required="required" class="purchase-input" />
                         </div>
                         <!-- number of times the customer shopped in the month -->
                         <div style="width: 50%;">
                             <label>Total expenses in this month:</label>
                             <input type="text" name="expense{{ i }}" 
-                                required="required" class="purchase-input" value="{{ month_diff }}000" />
+                                required="required" class="purchase-input"/>
                         </div>
                     </div>
                 </div>
@@ -62,21 +62,12 @@
         <br>
         {% endfor %}
         {% set currentm_name = datetime(current_year, current_month, 1).strftime("%B") %}
-
-
-        <label>Predict your purchase for current month {{currentm_name}}:</label>
-        <!-- <input type="text" name="current_month_prediction" placeholder="Purchase Prediction for {{currentm_name}}"  class="purchase-input"/>
-            <br> -->
-        <br>
         <button type="submit" class="btn btn-primary btn-block btn-large predict predict-button">Predict</button>
+        <center><h1>PKR {{prediction_placeholder}}.00</h1></center>
+        
         </form>
         </div><!--/.item-->
-        <br>
-        <br>
 
-        <center>
-            <p>{{ prediction_placeholder }}</p>
-        </center>
     </section><!--/#main-slider-->
 
 

@@ -12,7 +12,7 @@ app = Flask(__name__)
 # route
 @app.route('/')
 def home():
-    return render_template('index.html', datetime=datetime)
+    return render_template('index.html', datetime=datetime, prediction_placeholder=0)
 
 
 def get_model():
