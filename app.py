@@ -4,8 +4,8 @@ from tensorflow import keras
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import tensorflow as tf
-import re
-import string
+
+import pandas as pd
 
 from flask import Flask, request, render_template
 from datetime import datetime
@@ -25,7 +25,7 @@ def get_model():
     '''
     Loading model for the server-side
     '''
-    model = tf.keras.models.load_model('./templates/my_model.h5')
+    model = tf.keras.models.load_model('./Trained Model/my_model.h5')
     print(" * Model loaded!")
     return model
 
@@ -41,23 +41,40 @@ def predict():
     input_generator = request.form.values()
 
     # preprocess the html inputs
-    preprocessed_input = preprocess_data(input_generator)
-
+    array = preprocess_data(input_generator)
+    model = get_model()
+    prediction = model.predict([array])
+    print(prediction)
 
     return render_template('index.html', datetime=datetime, prediction_placeholder=0)
  
-def preprocess_data(input_generator):
+def preprocess_data(inputs):
     '''
     Takes the input generator of html elements,
     Converts the data into 3 groups,
     pass the dataframe back to predict fucntion 
     '''
-    input = list(input_generator)
-    
-    # convert the data into groups of 3
-    per_group = len(input)/3
+    # convert generator to list
+    inputs = list(inputs)
 
-    return input_generator
+    # couple the corresponding values, first being monthly count
+    # second being monthly expense
+    list_of_tuples = []
+    for i in range(0, len(inputs), 2):
+        list_of_tuples.append((int(inputs[i]),int(inputs[i+1])))
+    print(list_of_tuples)
+    input_len = len(list_of_tuples)
+
+    # convert the data into groups of 3
+    NUM_GROUPS = 3
+    per_group = len(list_of_tuples)/NUM_GROUPS 
+    print(per_group) 
+    df = pd.DataFrame(data=list_of_tuples, columns=['count','expense'])
+    grouped_df = df.groupby(df.index // per_group).apply(lambda x: pd.Series({'count': x['count'].sum(), 'expense': x['expense'].sum()}))
+    grouped_df['average'] = grouped_df['expense']/grouped_df['count']
+    array = np.reshape(np.array(grouped_df), (9,))
+
+    return array
 
 
 
