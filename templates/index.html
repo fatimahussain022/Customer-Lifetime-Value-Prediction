@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Value</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prettyPhoto.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Customer Lifetime Value</title>
+</head><!--/head-->
+
+<body data-spy="scroll" data-target="#navbar" data-offset="0">
+    <header id="header" role="banner">
+        <div class="container">
+            <div id="navbar" class="navbar navbar-default" >
+                <div class="navbar-header">
+                    <a class="navbar-brand">
+                        <h3>Customer Lifetime Value Prediction</h3>
+                    </a>
+                </div>
+            </div>   
+        </div>
+    </header><!--/#header-->
+
+
+<section id="main-slider" >
+    <div class="item active">
+        <h1>Customer Lifetime Value Predictor</h1>
+        <form action="{{ url_for('predict')}}" method="post">
+            
+            {% set current_month = datetime.utcnow().month %}
+            {% set current_year = datetime.utcnow().year %}
+
+            {% for i in range(13, 1, -1) %}
+                {% set month_diff = i - 1 %}
+                {% set year_diff = 1 if current_month - month_diff <= 0 else 0 %}
+                {% set month = (current_month - month_diff) % 12 or 12 %}
+                {% set year = current_year - year_diff %}
+                {% set month_name = datetime(year, month, 1).strftime("%B") %}
+                <div class="month">
+                    <!-- total expenses in the mont -->
+                    <div>
+                        <label>Enter your purchase for {{ month_name }}:</label>
+                        <input type="text" name="purchase{{ i }}" placeholder="Purchase for {{ month_name }}" required="required" class="purchase-input" value="{{month_diff}}000"/>
+                    </div>
+                    <!-- number fo time the customer shopped in the month -->
+                    <div>
+
+                    </div>
+                </div>
+                
+                <br>
+                <br>
+            {% endfor %}
+            {% set currentm_name = datetime(current_year, current_month, 1).strftime("%B") %}
+        
+
+            <label>Predict your purchase for current month {{currentm_name}}:</label>
+            <!-- <input type="text" name="current_month_prediction" placeholder="Purchase Prediction for {{currentm_name}}"  class="purchase-input"/>
+            <br> -->
+            <br>
+            <button type="submit" class="btn btn-primary btn-block btn-large predict predict-button">Predict</button>
+        </form>
+    </div><!--/.item-->
+    <br>
+    <br>
+
+    <center>
+        <p>{{ prediction_placeholder }}</p>
+    </center>
+</section><!--/#main-slider-->
+
+
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    &copy; 2023 <a target="_blank" href="http://cpins.seecs.edu.pk/" title="Predictor">Customer Lifetime Value Predictor</a>. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer><!--/#footer-->
+
+</body>
+</html>
