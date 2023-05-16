@@ -70,7 +70,7 @@ def preprocess_data(inputs):
 
     # flatten
     array = np.reshape(np.array(grouped_df), (1, 9,))
-    print(array)
+
     return array
 
 

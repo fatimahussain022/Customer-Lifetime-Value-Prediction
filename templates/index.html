@@ -1,38 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Customer Value</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prettyPhoto.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Customer Lifetime Value</title>
-</head><!--/head-->
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>CLTV Predictor</title>
+</head>
 
-<body data-spy="scroll" data-target="#navbar" data-offset="0">
-    <header id="header" role="banner">
-        <div class="container">
-            <div id="navbar" class="navbar navbar-default">
-                <div class="navbar-header">
-                    <a class="navbar-brand">
-                        <h3>Customer Lifetime Value Prediction</h3>
-                    </a>
-                </div>
+<body>
+    <div class="formbold-main-wrapper">
+        <!-- Author: FormBold Team -->
+        <!-- Learn More: https://formbold.com -->
+        <div class="formbold-form-wrapper container">
+            <div class="formbold-titles">
+                <h1>Customer Lifetime Prediction</h1>
+                <h5>Unlock the power of predictive sales and boost your business with our app that anticipates customer
+                    spending for the month ahead!</h5>
             </div>
-        </div>
-    </header><!--/#header-->
-
-
-    <section id="main-slider">
-        <div class="item active">
-            <h1>Customer Lifetime Value Predictor</h1>
-            <form action="{{ url_for('predict')}}" method="post">
-
+            <img class="formbold-img"
+                src="https://thumbs.dreamstime.com/b/customer-people-review-vector-illustration-cartoon-flat-happy-man-woman-characters-holding-rating-heart-likes-183566694.jpg">
+            <form action="{{ url_for('predict')}}" method="POST">
                 {% set current_month = datetime.utcnow().month %}
                 {% set current_year = datetime.utcnow().year %}
 
@@ -40,49 +29,28 @@
                 {% set month_diff = i - 1 %}
                 {% set year_diff = 1 if current_month - month_diff <= 0 else 0 %} {% set month=(current_month -
                     month_diff) % 12 or 12 %} {% set year=current_year - year_diff %} {% set month_name=datetime(year,
-                    month, 1).strftime("%B") %} 
-                <div class='container'>
-                    <h2 style="color:whitesmoke; margin: 20px 0px">{{ month_name }}</h2>
-                    <div class="row" style="display: flex">
-                        <!-- total expenses in the month -->
-                        <div style="width: 50%;">
-                            <label>Total number of times you have shopped in this month:</label>
-                            <input type="text" name="count{{ i }}" 
-                                required="required" class="purchase-input" />
-                        </div>
-                        <!-- number of times the customer shopped in the month -->
-                        <div style="width: 50%;">
-                            <label>Total expenses in this month:</label>
-                            <input type="text" name="expense{{ i }}" 
-                                required="required" class="purchase-input"/>
+                    month, 1).strftime("%B") %}
+                 <!-- MONTH -->
+                    <div class="formbold-input-wrapp formbold-mb-3">
+                        <label for="firstname" class="formbold-form-label"> {{ month_name }} </label>
+
+                        <div>
+                            <input type="number" name="count{{ i }}"
+                                placeholder="Number of times shopped in this month" class="formbold-form-input"/>
+
+                            <input type="number" placeholder="Total expense of this month"
+                                class="formbold-form-input" name="expense{{ i }}" />
                         </div>
                     </div>
-                </div>
-        <br>
-        <br>
-        {% endfor %}
-        {% set currentm_name = datetime(current_year, current_month, 1).strftime("%B") %}
-        <button type="submit" class="btn btn-primary btn-block btn-large predict predict-button">Predict</button>
-        <center><h1>PKR {{prediction_placeholder}}.00</h1></center>
-        
-        </form>
-        </div><!--/.item-->
-
-    </section><!--/#main-slider-->
-
-
-
-    <footer id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    &copy; 2023 <a target="_blank" href="http://cpins.seecs.edu.pk/" title="Predictor">Customer Lifetime
-                        Value Predictor</a>. All Rights Reserved.
-                </div>
-            </div>
+                    {% endfor %}
+                    {% set currentm_name = datetime(current_year, current_month, 1).strftime("%B") %}
+                    <div class="formbold-results">
+                        <button class="formbold-btn">Submit</button>
+                        <h3>PKR {{prediction_placeholder}}.00</h2>
+                    </div>
+            </form>
         </div>
-    </footer><!--/#footer-->
-
+    </div>
 </body>
 
 </html>
