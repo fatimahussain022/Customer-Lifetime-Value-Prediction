@@ -36,7 +36,7 @@
 
                         <div>
                             <input type="number" name="count{{ i }}"
-                                placeholder="Number of times shopped in this month" class="formbold-form-input"/>
+                                placeholder="Number of times shopped in this month" class="formbold-form-input" />
 
                             <input type="number" placeholder="Total expense of this month"
                                 class="formbold-form-input" name="expense{{ i }}" />
@@ -46,7 +46,7 @@
                     {% set currentm_name = datetime(current_year, current_month, 1).strftime("%B") %}
                     <div class="formbold-results">
                         <button class="formbold-btn">Submit</button>
-                        <h3>PKR {{prediction_placeholder}}.00</h2>
+                        <h3>PKR {{prediction_placeholder}}</h2>
                     </div>
             </form>
         </div>

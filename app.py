@@ -19,7 +19,7 @@ def get_model():
     '''
     Loading model for the server-side
     '''
-    model = load_model('./Trained Model/final_model.h5')
+    model = load_model('./Trained Model/881.h5')
     return model
 
 
@@ -51,6 +51,7 @@ def preprocess_data(inputs):
     '''
     # convert generator to list
     inputs = list(inputs)
+    print(inputs)
 
     # couple the corresponding values, 
     # first being monthly count
@@ -67,9 +68,12 @@ def preprocess_data(inputs):
     df = pd.DataFrame(data=list_of_tuples, columns=['count','expense'])
     grouped_df = df.groupby(df.index // per_group).apply(lambda x: pd.Series({'count': x['count'].sum(), 'expense': x['expense'].sum()}))
     grouped_df['average'] = grouped_df['expense']/grouped_df['count']
+    grouped_df = grouped_df.fillna(0)
+    print(grouped_df)
 
     # flatten
     array = np.reshape(np.array(grouped_df), (1, 9,))
+    print(array)
 
     return array
 
